@@ -529,6 +529,8 @@ provider:
       accessLogging: true
       # Log format to use for access logs
       format: 'requestId: $context.requestId'
+      # The ARN of a existing CloudWatch LogGroup or Firehose Delivery Stream (optional)
+      destinationArn: 
       # Enable execution logging (default: true)
       executionLogging: true
       # Log level to use for execution logging: INFO or ERROR

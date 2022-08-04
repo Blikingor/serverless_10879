@@ -605,6 +605,24 @@ describe('#updateStage()', () => {
     }
   );
 
+  it('should update the stage with a custom destination arn if given', () => {
+    
+    const expectedDestinationArn = 'arn:aws:firehose:us-east-1:123456:deliverystream/amazon-apigateway-my-service-dev';
+
+    context.state.service.provider.logs = {
+      restApi: {
+        destinationArn: expectedDestinationArn,
+      },
+    };
+
+    return updateStage.call(context).then(() => {
+      expect(providerGetAccountInfoStub).to.be.calledOnce;
+      expect(providerRequestStub.args).to.have.length(4);
+      expect(providerRequestStub.args[3 /* updateStage */][2 /* operations */].patchOperations[0 /* destinationArn */].path).to.equal('/accessLogSettings/destinationArn');
+      expect(providerRequestStub.args[3 /* updateStage */][2 /* operations */].patchOperations[0 /* destinationArn */].value).to.equal(expectedDestinationArn);
+    });
+  });
+
   it('should update the stage with a custom APIGW log format if given', () => {
     context.state.service.provider.logs = {
       restApi: {
